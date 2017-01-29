@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import Layout from './Layout';
 import Form from './Form';
-import { Col, Table } from 'react-bootstrap';
-import store from './Store';
-
+import { Col, Table, Button } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { addObject } from './Store'
 import './App.css';
 
 const Header = ({
@@ -27,22 +27,27 @@ const Body = ({ lines }) =>
   )}
   </tbody>
 
-class App extends Component {
-  render() {
-    return (
-      <Layout>
-      <Col md={6}>
+const App = ({ lines, onAdd }) =>
+  <Layout>
+    <Col md={6}>
       <Table responsive>
       <Header columns={['#', 'Name', 'Description']} />
-      <Body lines={ store.getState() } />
+      <Body lines={ lines } />
       </Table>
-      </Col>
-        <Col md={6}>
-        <Form/>
-        </Col>
-      </Layout>
-    );
+    </Col>
+    <Col md={6}>
+      <Form/>
+    </Col>
+  </Layout>
+
+const mapStateToProps = (state) => {
+  return {
+    lines: state
   }
 }
 
-export default App;
+const AppContainer = connect(
+  mapStateToProps
+)(App)
+
+export default AppContainer;
