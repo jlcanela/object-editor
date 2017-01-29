@@ -1,19 +1,46 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import Layout from './Layout';
+import Form from './Form';
+import { Col, Table } from 'react-bootstrap';
+import store from './Store';
+
 import './App.css';
+
+const Header = ({
+  columns
+}) => (
+  <thead>
+  <tr>
+  { columns.map((name) => <th>{name}</th> )}
+  </tr>
+  </thead>
+);
+
+const Body = ({ lines }) =>
+  <tbody>
+  { lines.map( (id) =>
+    <tr>
+      <td>{id}</td>
+      <td>Table cell</td>
+      <td>Table cell</td>
+    </tr>
+  )}
+  </tbody>
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
+      <Layout>
+      <Col md={6}>
+      <Table responsive>
+      <Header columns={['#', 'Name', 'Description']} />
+      <Body lines={ store.getState() } />
+      </Table>
+      </Col>
+        <Col md={6}>
+        <Form/>
+        </Col>
+      </Layout>
     );
   }
 }
