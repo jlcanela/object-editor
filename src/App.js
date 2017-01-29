@@ -11,28 +11,28 @@ const Header = ({
 }) => (
   <thead>
   <tr>
-  { columns.map((name) => <th>{name}</th> )}
+  { columns.map((name) => <th key={name}>{name}</th> )}
   </tr>
   </thead>
 );
 
-const Body = ({ lines }) =>
+const Body = ({ objects }) =>
   <tbody>
-  { lines.map( (id) =>
-    <tr>
-      <td>{id}</td>
-      <td>Table cell</td>
-      <td>Table cell</td>
+  { objects.map( (object) =>
+    <tr key={object.id}>
+      <td>{object.id}</td>
+      <td>{object.name}</td>
+      <td>{object.description}</td>
     </tr>
   )}
   </tbody>
 
-const App = ({ lines, onAdd }) =>
+const App = ({ objects, onAdd }) =>
   <Layout>
     <Col md={6}>
       <Table responsive>
       <Header columns={['#', 'Name', 'Description']} />
-      <Body lines={ lines } />
+      <Body objects={ objects } />
       </Table>
     </Col>
     <Col md={6}>
@@ -42,7 +42,7 @@ const App = ({ lines, onAdd }) =>
 
 const mapStateToProps = (state) => {
   return {
-    lines: state
+    objects: state.objects
   }
 }
 

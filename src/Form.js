@@ -1,50 +1,64 @@
 import React from 'react';
 import { Button, FormGroup, FormControl, HelpBlock, ControlLabel } from 'react-bootstrap';
-import { addObject } from './Store'
+import { addObject, updateName, updateDescription } from './Store'
 import { connect } from 'react-redux';
 
-const Form = ({ onAdd }) =>
+const Form = ({
+  name,
+  description,
+  addObject,
+  updateName,
+  updateDescription
+}) =>
   <form>
     <h4>Create a new object</h4>
-    <FormGroup
-      controlId="formBasicText"
-      validationState={''/*this.getValidationState()*/}
-    >
+    <FormGroup controlId="formBasicText">
       <ControlLabel>Name:</ControlLabel>
       <FormControl
         type="text"
-        value={''/*this.state.value*/}
+        value={ name }
         placeholder="Enter text"
-        //onChange={/*this.handleChange*/}
+        onChange={ (event) => updateName(event.target.value) }
       />
       <FormControl.Feedback />
-      <HelpBlock>Validation is based on string length.</HelpBlock>
       <ControlLabel>Description:</ControlLabel>
       <FormControl
         type="text"
-        value={''/*this.state.value*/}
-        placeholder="Enter text"
-        //onChange={/*this.handleChange*/}
+        value={ description }
+        placeholder="Enter description"
+        onChange={ (event) => updateDescription(event.target.value) }
       />
       <FormControl.Feedback />
-      <HelpBlock>Validation is based on string length.</HelpBlock>
       <Button onClick={ () => {
-        onAdd(33);
+        addObject(name, description);
       }
        }>Add</Button>
     </FormGroup>
   </form>
 
+const mapStateToProps = (state) => {
+  return {
+    name: state.form.name,
+    description: state.form.description
+  }
+}
+
 const mapDispatchToProps = (dispatch) => {
   return {
-    onAdd: (id) => {
-      dispatch(addObject(id))
+    addObject: (name, description) => {
+      dispatch(addObject(name, description))
+    },
+    updateName: (name) => {
+      dispatch(updateName(name))
+    },
+    updateDescription: (description) => {
+      dispatch(updateDescription(description))
     }
   }
 }
 
 const FormContainer = connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Form)
 
